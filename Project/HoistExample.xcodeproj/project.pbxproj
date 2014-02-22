@@ -19,10 +19,11 @@
 		BEAEF4EF18B86A9500F9887D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEAEF4D718B86A9500F9887D /* UIKit.framework */; };
 		BEAEF4F718B86A9500F9887D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BEAEF4F518B86A9500F9887D /* InfoPlist.strings */; };
 		BEAEF4F918B86A9500F9887D /* HoistExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAEF4F818B86A9500F9887D /* HoistExampleTests.m */; };
-		BEAEF50B18B86B3C00F9887D /* Hoist.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAEF50418B86B3C00F9887D /* Hoist.m */; };
-		BEAEF50C18B86B3C00F9887D /* HoistObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAEF50618B86B3C00F9887D /* HoistObject.m */; };
-		BEAEF50D18B86B3C00F9887D /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = BEAEF50818B86B3C00F9887D /* .gitkeep */; };
-		BEAEF50E18B86B3C00F9887D /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = BEAEF50A18B86B3C00F9887D /* .gitkeep */; };
+		BEAEF51818B8718C00F9887D /* Hoist.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAEF51118B8718C00F9887D /* Hoist.m */; };
+		BEAEF51918B8718C00F9887D /* HoistObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAEF51318B8718C00F9887D /* HoistObject.m */; };
+		BEAEF51A18B8718C00F9887D /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = BEAEF51518B8718C00F9887D /* .gitkeep */; };
+		BEAEF51B18B8718C00F9887D /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = BEAEF51718B8718C00F9887D /* .gitkeep */; };
+		BEAEF51E18B871A400F9887D /* BlogPost.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAEF51D18B871A400F9887D /* BlogPost.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,12 +53,14 @@
 		BEAEF4F418B86A9500F9887D /* HoistExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HoistExampleTests-Info.plist"; sourceTree = "<group>"; };
 		BEAEF4F618B86A9500F9887D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BEAEF4F818B86A9500F9887D /* HoistExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoistExampleTests.m; sourceTree = "<group>"; };
-		BEAEF50318B86B3C00F9887D /* Hoist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hoist.h; sourceTree = "<group>"; };
-		BEAEF50418B86B3C00F9887D /* Hoist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hoist.m; sourceTree = "<group>"; };
-		BEAEF50518B86B3C00F9887D /* HoistObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HoistObject.h; sourceTree = "<group>"; };
-		BEAEF50618B86B3C00F9887D /* HoistObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HoistObject.m; sourceTree = "<group>"; };
-		BEAEF50818B86B3C00F9887D /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		BEAEF50A18B86B3C00F9887D /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		BEAEF51018B8718C00F9887D /* Hoist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hoist.h; sourceTree = "<group>"; };
+		BEAEF51118B8718C00F9887D /* Hoist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hoist.m; sourceTree = "<group>"; };
+		BEAEF51218B8718C00F9887D /* HoistObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HoistObject.h; sourceTree = "<group>"; };
+		BEAEF51318B8718C00F9887D /* HoistObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HoistObject.m; sourceTree = "<group>"; };
+		BEAEF51518B8718C00F9887D /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		BEAEF51718B8718C00F9887D /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		BEAEF51C18B871A400F9887D /* BlogPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogPost.h; sourceTree = "<group>"; };
+		BEAEF51D18B871A400F9887D /* BlogPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogPost.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +90,7 @@
 		BEAEF4C718B86A9500F9887D = {
 			isa = PBXGroup;
 			children = (
+				BEAEF50F18B8718C00F9887D /* Classes */,
 				BEAEF4D918B86A9500F9887D /* HoistExample */,
 				BEAEF4F218B86A9500F9887D /* HoistExampleTests */,
 				BEAEF4D218B86A9500F9887D /* Frameworks */,
@@ -117,11 +121,12 @@
 		BEAEF4D918B86A9500F9887D /* HoistExample */ = {
 			isa = PBXGroup;
 			children = (
-				BEAEF50218B86B3C00F9887D /* Classes */,
 				BEAEF4E218B86A9500F9887D /* HAAppDelegate.h */,
 				BEAEF4E318B86A9500F9887D /* HAAppDelegate.m */,
 				BEAEF4E518B86A9500F9887D /* Images.xcassets */,
 				BEAEF4DA18B86A9500F9887D /* Supporting Files */,
+				BEAEF51C18B871A400F9887D /* BlogPost.h */,
+				BEAEF51D18B871A400F9887D /* BlogPost.m */,
 			);
 			path = HoistExample;
 			sourceTree = "<group>";
@@ -155,31 +160,32 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		BEAEF50218B86B3C00F9887D /* Classes */ = {
+		BEAEF50F18B8718C00F9887D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				BEAEF50318B86B3C00F9887D /* Hoist.h */,
-				BEAEF50418B86B3C00F9887D /* Hoist.m */,
-				BEAEF50518B86B3C00F9887D /* HoistObject.h */,
-				BEAEF50618B86B3C00F9887D /* HoistObject.m */,
-				BEAEF50718B86B3C00F9887D /* ios */,
-				BEAEF50918B86B3C00F9887D /* osx */,
+				BEAEF51018B8718C00F9887D /* Hoist.h */,
+				BEAEF51118B8718C00F9887D /* Hoist.m */,
+				BEAEF51218B8718C00F9887D /* HoistObject.h */,
+				BEAEF51318B8718C00F9887D /* HoistObject.m */,
+				BEAEF51418B8718C00F9887D /* ios */,
+				BEAEF51618B8718C00F9887D /* osx */,
 			);
-			path = Classes;
+			name = Classes;
+			path = ../Classes;
 			sourceTree = "<group>";
 		};
-		BEAEF50718B86B3C00F9887D /* ios */ = {
+		BEAEF51418B8718C00F9887D /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				BEAEF50818B86B3C00F9887D /* .gitkeep */,
+				BEAEF51518B8718C00F9887D /* .gitkeep */,
 			);
 			path = ios;
 			sourceTree = "<group>";
 		};
-		BEAEF50918B86B3C00F9887D /* osx */ = {
+		BEAEF51618B8718C00F9887D /* osx */ = {
 			isa = PBXGroup;
 			children = (
-				BEAEF50A18B86B3C00F9887D /* .gitkeep */,
+				BEAEF51718B8718C00F9887D /* .gitkeep */,
 			);
 			path = osx;
 			sourceTree = "<group>";
@@ -260,10 +266,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEAEF50D18B86B3C00F9887D /* .gitkeep in Resources */,
+				BEAEF51A18B8718C00F9887D /* .gitkeep in Resources */,
 				BEAEF4DE18B86A9500F9887D /* InfoPlist.strings in Resources */,
 				BEAEF4E618B86A9500F9887D /* Images.xcassets in Resources */,
-				BEAEF50E18B86B3C00F9887D /* .gitkeep in Resources */,
+				BEAEF51B18B8718C00F9887D /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,9 +288,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEAEF50B18B86B3C00F9887D /* Hoist.m in Sources */,
+				BEAEF51818B8718C00F9887D /* Hoist.m in Sources */,
 				BEAEF4E018B86A9500F9887D /* main.m in Sources */,
-				BEAEF50C18B86B3C00F9887D /* HoistObject.m in Sources */,
+				BEAEF51E18B871A400F9887D /* BlogPost.m in Sources */,
+				BEAEF51918B8718C00F9887D /* HoistObject.m in Sources */,
 				BEAEF4E418B86A9500F9887D /* HAAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
