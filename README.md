@@ -69,7 +69,45 @@ If for some reason you want to have different property names than JSON keys you 
 	- (void)delete;
 	- (void)deleteWithCompletion:(void (^)(HoistResponseStatusCode responseCode))completion;
 
+###Example
 
+These two classes make it really easy to do something like this 
+```ObjectiveC
+// Set the API Key
+[[Hoist shared] setApiKey:@"EZYRNDNOEEXGQWHNJLMJ"];
+    
+// Fetch all BlogPosts
+[BlogPost fetchAllWithCompletion:^(NSArray *objects, HoistResponseStatusCode responseCode) 	{
+        
+    if (responseCode == HoistResponseStatusCodeOk) {
+            
+        // If there isn't a BlogPost
+        if (![objects count]) {
+                
+            // Let's create one, and save it
+            BlogPost *blogPost = [BlogPost new];
+            blogPost.title = @"Blog Post Title!";
+            blogPost.body = @"Body of the blog post.";
+            blogPost.views = @(0);
+            blogPost.draft = YES;
+            [blogPost save];
+                
+        } else {
+                
+            // Get the first BlogPost
+            BlogPost *blogPost = [objects firstObject];
+                
+            // We can then change things and call save to update the object
+            blogPost.views = @([blogPost.views integerValue] + 1);
+            [blogPost save];
+                
+        }
+        NSLog(@"%@", objects);
+    } else {
+        NSLog(@"Error");
+    }
+}];
+```
 
 ## Requirements
 
