@@ -7,21 +7,18 @@
 Pod::Spec.new do |s|
   s.name             = "Hoist"
   s.version          = "0.1.0"
-  s.summary          = "A short description of Hoist."
+  s.summary          = "A Hoist iOS client library."
   s.description      = <<-DESC
-                       An optional longer description of Hoist
-
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+                       Use Hoist as a datastore for your iOS applications.
+                       
+                       Easy to use, just create objects and call `save` on them.
                        DESC
-  s.homepage         = "http://EXAMPLE/NAME"
-  s.screenshots      = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  # s.homepage         = "http://EXAMPLE/NAME"
   s.license          = 'MIT'
   s.author           = { "Will Townsend" => "will@townsend.io" }
   s.source           = { :git => "http://EXAMPLE/NAME.git", :tag => s.version.to_s }
-  s.social_media_url = 'https://twitter.com/NAME'
 
-  # s.platform     = :ios, '5.0'
+  s.platform     = :ios, '7.0'
   # s.ios.deployment_target = '5.0'
   # s.osx.deployment_target = '10.7'
   s.requires_arc = true
