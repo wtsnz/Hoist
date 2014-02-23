@@ -43,22 +43,14 @@ static NSString *kHoistApiDataUrl = @"https://data.hoi.io";
     return self;
 }
 
-#pragma mark - Hoist Config
-
-- (void)setApiKey:(NSString *)apiKey
-{
-    _apiKey = apiKey;
-    self.urlSessionConfiguration.HTTPAdditionalHeaders = [self headersForHoistUrlSession];
-}
-
 #pragma mark - Hoist Data
 
 - (void)fetchObjectForType:(NSString *)type objectId:(NSString *)objectId completion:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/%@", kHoistApiDataUrl, type, objectId]];
-
+    
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.allHTTPHeaderFields = [self headersForHoistUrlSession];
+    request.allHTTPHeaderFields = [self headersForDataRequest];
     
     NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:completion];
     
@@ -70,7 +62,7 @@ static NSString *kHoistApiDataUrl = @"https://data.hoi.io";
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", kHoistApiDataUrl, type]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.allHTTPHeaderFields = [self headersForHoistUrlSession];
+    request.allHTTPHeaderFields = [self headersForDataRequest];
     
     NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:completion];
     
@@ -82,7 +74,7 @@ static NSString *kHoistApiDataUrl = @"https://data.hoi.io";
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", kHoistApiDataUrl, type]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.allHTTPHeaderFields = [self headersForHoistUrlSession];
+    request.allHTTPHeaderFields = [self headersForDataRequest];
     request.HTTPMethod = @"POST";
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
     
@@ -96,7 +88,7 @@ static NSString *kHoistApiDataUrl = @"https://data.hoi.io";
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/%@", kHoistApiDataUrl, type, objectId]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.allHTTPHeaderFields = [self headersForHoistUrlSession];
+    request.allHTTPHeaderFields = [self headersForDataRequest];
     request.HTTPMethod = @"DELETE";
     
     NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:completion];
@@ -109,7 +101,7 @@ static NSString *kHoistApiDataUrl = @"https://data.hoi.io";
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", kHoistApiDataUrl, type]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.allHTTPHeaderFields = [self headersForHoistUrlSession];
+    request.allHTTPHeaderFields = [self headersForDataRequest];
     request.HTTPMethod = @"DELETE";
     
     NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:completion];
@@ -123,20 +115,36 @@ static NSString *kHoistApiDataUrl = @"https://data.hoi.io";
 {
     if (!_urlSessionConfiguration) {
         _urlSessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        _urlSessionConfiguration.HTTPAdditionalHeaders = [self headersForHoistUrlSession];
     }
     return _urlSessionConfiguration;
 }
 
-- (NSDictionary *)headersForHoistUrlSession
+- (NSMutableDictionary *)authorizationHeader
 {
-    NSMutableDictionary *headers = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"application/json", @"Accept",
-                                    @"application/json", @"Content-Type", nil];
+    NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     if (self.apiKey) {
         [headers setObject:[NSString stringWithFormat:@"Hoist %@", self.apiKey] forKey:@"Authorization"];
     }
-
     return headers;
+}
+
+- (NSDictionary *)headersForDataRequest
+{
+    NSMutableDictionary *headers = [self authorizationHeader];
+    
+    [headers setObject:@"application/json" forKey:@"Content-Type"];
+    [headers setObject:@"application/json" forKey:@"Accept"];
+    
+    return headers;
+}
+
+#pragma mark - Setters
+
+- (void)setApiKey:(NSString *)apiKey
+{
+    _apiKey = apiKey;
+    // Update the Authorization header
+    self.urlSessionConfiguration.HTTPAdditionalHeaders = [self authorizationHeader];
 }
 
 @end
