@@ -206,14 +206,13 @@
 {
     //TODO: Add automatic type conversion. Strings only for now.
     // Auto set object properties. Crude for now.
-    
     NSDictionary *mappings = [self propertyToJSONMappings];
     
-    for (NSString *property in [self hoist_propertyNames]) {
+    for (NSString *propertyName in [self hoist_propertyNames]) {
         
-        NSString *key = property;
+        NSString *key = propertyName;
         
-        NSString *jsonKey = mappings[property];
+        NSString *jsonKey = mappings[propertyName];
         
         if (jsonKey) {
             key = jsonKey;
@@ -221,7 +220,34 @@
         
         id obj = dictionary[key];
         if (obj) {
-            [self setValue:obj forKey:property];
+            
+            // Figure out the property type
+            NSString *className = [self hoist_classNameFromPropertyName:propertyName];
+            Class class = NSClassFromString(className);
+            
+            // Set the primative, hope it works.
+            if (!class) {
+                [self setValue:obj forKey:propertyName];
+            }
+            // Set the object if they are the same kind
+            else if ([obj isKindOfClass:class]) {
+                [self setValue:obj forKey:propertyName];
+            }
+            // If the property is an NSDate and obj is NSString, we may have some conversion to do.
+            else if ([NSDate class] == class && [obj isKindOfClass:[NSString class]]) {
+                
+                // Check we are parsing the standard hoist createdDate or updatedDate
+                if ([propertyName isEqualToString:@"createdDate"] || [propertyName isEqualToString:@"updatedDate"]) {
+                    NSDate *parsedDate = [[self hoist_RFC3339DateFormatter] dateFromString:obj];
+                    [self setValue:parsedDate forKey:propertyName];
+                } else {
+                    //TODO: add custom date parsing
+                }
+            }
+            
+            NSLog(@"%@ - %@", className, class);
+            
+            
         }
     }
 }
@@ -237,6 +263,17 @@
 }
 
 #pragma mark - Private Hoist Object Methods
+
+static NSDateFormatter *hoist_RFC3339DateFormatter = nil;
+
+- (NSDateFormatter *)hoist_RFC3339DateFormatter
+{
+    if (!hoist_RFC3339DateFormatter) {
+        hoist_RFC3339DateFormatter = [[NSDateFormatter alloc] init];
+        hoist_RFC3339DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    }
+    return hoist_RFC3339DateFormatter;
+}
 
 - (NSArray *)hoist_propertyNames
 {
@@ -268,28 +305,64 @@
     return propertyNames;
 }
 
+- (NSString *)hoist_classNameFromPropertyName:(NSString *)propertyName
+{
+    // Get property and propertyAttributeDescription
+    objc_property_t property = class_getProperty([self class], [propertyName UTF8String]);
+    const char *attr = property_getAttributes(property);
+    NSString *attributeDescription = [NSString stringWithCString:attr encoding:NSUTF8StringEncoding];
+    
+    // Deal with the first bit.
+    attributeDescription = [[attributeDescription componentsSeparatedByString:@","] firstObject];
+    
+    NSString *className;
+    BOOL isType = [[attributeDescription substringToIndex:1] isEqualToString:@"T"];
+    BOOL isObject = [[attributeDescription substringWithRange:NSMakeRange(1, 1)] isEqualToString:@"@"];
+    
+    if (isType && !isObject) {
+        // No class, just a primative
+        className = [attributeDescription substringWithRange:NSMakeRange(1, 1)];
+    } else {
+        // Object, get the class
+        className = [attributeDescription substringWithRange:NSMakeRange(3, [attributeDescription length] - 4)];
+    }
+    return className;
+}
+
 - (NSDictionary *)hoist_dictionaryRepresentation
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     
-    NSArray *keys = [self hoist_propertyNames];
+    NSArray *propertyNames = [self hoist_propertyNames];
     
     NSDictionary *swappedKeys = [self propertyToJSONMappings];
     
-    for (NSString *key in keys) {
+    for (NSString *propertyName in propertyNames) {
         
-        if (swappedKeys[key]) {
-            
-            id value = [self valueForKey:key];
-            if (value) {
-                [dictionary setObject:value forKey:swappedKeys[key]];
+        // Value to save/convert
+        id value = [self valueForKey:propertyName];
+        
+        NSString *key = propertyName;
+        if (swappedKeys[propertyName]) {
+            key = swappedKeys[propertyName];
+        }
+        
+        // Figure out the property type
+        NSString *className = [self hoist_classNameFromPropertyName:propertyName];
+        Class class = NSClassFromString(className);
+        
+        if ([NSDate class] == class) {
+            // Check we are parsing the standard hoist createdDate or updatedDate
+            if ([propertyName isEqualToString:@"createdDate"] || [propertyName isEqualToString:@"updatedDate"]) {
+                NSString *parsedString = [[self hoist_RFC3339DateFormatter] stringFromDate:value];
+                value = parsedString;
+            } else {
+                //TODO: add custom date parsing
             }
-            
-        } else {
-            id value = [self valueForKey:key];
-            if (value) {
-                [dictionary setObject:value forKey:key];
-            }
+        }
+        
+        if (value) {
+            [dictionary setObject:value forKey:key];
         }
     }
     

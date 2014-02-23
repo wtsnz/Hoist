@@ -42,6 +42,7 @@
                 
                 // We can then change things and call save to update the object
                 blogPost.views = @([blogPost.views integerValue] + 1);
+                blogPost.draft = YES;
                 [blogPost save];
                 
             }

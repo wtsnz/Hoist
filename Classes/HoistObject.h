@@ -16,11 +16,11 @@
 /**
  The default Hoist _createdDate property
  */
-@property (strong, nonatomic) NSString *createdDate;
+@property (strong, nonatomic) NSDate *createdDate;
 /**
  The default Hoist _updatedAt property
  */
-@property (strong, nonatomic) NSString *updatedDate;
+@property (strong, nonatomic) NSDate *updatedDate;
 /**
  The default Hoist _id property
  */
