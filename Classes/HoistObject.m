@@ -24,7 +24,9 @@
             // If an error occurred, return with the status code
             if (error) {
                 if (completion) {
-                    completion(nil, [httpResponse statusCode]);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil, [httpResponse statusCode]);
+                    });
                 }
                 return;
             }
@@ -44,7 +46,9 @@
                 }
                 
                 if (completion) {
-                    completion([NSArray arrayWithArray:hoistObjects], [httpResponse statusCode]);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion([NSArray arrayWithArray:hoistObjects], [httpResponse statusCode]);
+                    });
                 }
                 return;
             } else {
@@ -55,7 +59,9 @@
         // What.
         NSLog(@"Host Object ERROR: %@", error.localizedDescription);
         if (completion) {
-            completion(nil, HoistResponseStatusCodeUnknown);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(nil, HoistResponseStatusCodeUnknown);
+            });
         }
         return;
     }];
@@ -72,7 +78,9 @@
             // If error, return with the status code
             if (error) {
                 if (completion) {
-                    completion(nil, [httpResponse statusCode]);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil, [httpResponse statusCode]);
+                    });
                 }
                 return;
             }
@@ -83,7 +91,9 @@
                 HoistObject *object = [[self class] new];
                 [object configureWithDictionary:responseObject];
                 if (completion) {
-                    completion(object, [httpResponse statusCode]);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(object, [httpResponse statusCode]);
+                    });
                 }
                 return;
             } else {
@@ -94,7 +104,9 @@
         // What.
         NSLog(@"Host Object ERROR: %@", error.localizedDescription);
         if (completion) {
-            completion(nil, HoistResponseStatusCodeUnknown);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(nil, HoistResponseStatusCodeUnknown);
+            });
         }
         return;
     }];
@@ -111,12 +123,16 @@
         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
             if (completion) {
-                completion([httpResponse statusCode]);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion([httpResponse statusCode]);
+                });
             }
         } else {
             // What.
             if (completion) {
-                completion(HoistResponseStatusCodeUnknown);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(HoistResponseStatusCodeUnknown);
+                });
             }
         }
     }];
@@ -143,12 +159,16 @@
         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
             if (completion) {
-                completion([httpResponse statusCode]);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion([httpResponse statusCode]);
+                });
             }
         } else {
             // What.
             if (completion) {
-                completion(HoistResponseStatusCodeUnknown);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(HoistResponseStatusCodeUnknown);
+                });
             }
         }
     }];
@@ -166,12 +186,16 @@
         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
             if (completion) {
-                completion([httpResponse statusCode]);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion([httpResponse statusCode]);
+                });
             }
         } else {
             // What.
             if (completion) {
-                completion(HoistResponseStatusCodeUnknown);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(HoistResponseStatusCodeUnknown);
+                });
             }
         }
         
