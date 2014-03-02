@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Hoist"
-  s.version          = "0.1.1"
+  s.version          = "0.1.2"
   s.summary          = "A Hoist iOS client library."
   s.description      = <<-DESC
                        Use Hoist as a datastore for your iOS applications.
