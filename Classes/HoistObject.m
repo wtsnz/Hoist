@@ -249,30 +249,10 @@
             // If the property is an NSDate and obj is NSString, we may have some conversion to do.
             else if ([NSDate class] == class && [obj isKindOfClass:[NSString class]]) {
                 
-                
-                // Call the function that should return a string for the format.
-                NSString *selectorName = [NSString stringWithFormat:@"%@Format", propertyName];
-                SEL selector = NSSelectorFromString(selectorName);
-                
-                if (selector == NULL) {
-                    NSLog(@"Invalid selector");
-                } else {
-                    
-                    if ([self respondsToSelector:selector]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                        NSString *dateFormat = [self performSelector:selector];
-#pragma clang diagnostic pop
-                        if (dateFormat) {
-                            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                            dateFormatter.dateFormat = dateFormat;
-                            NSDate *parsedDate = [dateFormatter dateFromString:obj];
-                            [self setValue:parsedDate forKey:propertyName];
-                        }
-                        
-                    } else {
-                        NSLog(@"Failed to parse Date for %@ - implement - (NSString)%@ to fix", propertyName, selectorName);
-                    }
+                NSDateFormatter *dateFormatter = [self hoist_dateFormatterForPropertyName:propertyName];
+                if (dateFormatter) {
+                    NSDate *parsedDate = [dateFormatter dateFromString:obj];
+                    [self setValue:parsedDate forKey:propertyName];
                 }
             }
         }
@@ -303,17 +283,6 @@
 }
 
 #pragma mark - Private Hoist Object Methods
-
-static NSDateFormatter *hoist_RFC3339DateFormatter = nil;
-
-- (NSDateFormatter *)hoist_RFC3339DateFormatter
-{
-    if (!hoist_RFC3339DateFormatter) {
-        hoist_RFC3339DateFormatter = [[NSDateFormatter alloc] init];
-        hoist_RFC3339DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    }
-    return hoist_RFC3339DateFormatter;
-}
 
 - (NSArray *)hoist_propertyNames
 {
@@ -369,6 +338,33 @@ static NSDateFormatter *hoist_RFC3339DateFormatter = nil;
     return className;
 }
 
+- (NSDateFormatter *)hoist_dateFormatterForPropertyName:(NSString *)propertyName
+{
+    NSString *selectorName = [NSString stringWithFormat:@"%@Format", propertyName];
+    SEL selector = NSSelectorFromString(selectorName);
+    
+    if (selector == NULL) {
+        NSLog(@"Invalid selector");
+    } else {
+        
+        if ([self respondsToSelector:selector]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            NSString *dateFormat = [self performSelector:selector];
+#pragma clang diagnostic pop
+            if (dateFormat) {
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                dateFormatter.dateFormat = dateFormat;
+                return dateFormatter;
+            }
+            
+        } else {
+            NSLog(@"Failed to parse Date for %@ - implement - (NSString)%@ to fix", propertyName, selectorName);
+        }
+    }
+    return nil;
+}
+
 - (NSDictionary *)hoist_dictionaryRepresentation
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
@@ -393,31 +389,13 @@ static NSDateFormatter *hoist_RFC3339DateFormatter = nil;
         
         if ([NSDate class] == class) {
             
-            // Call the function that should return a string for the format.
-            NSString *selectorName = [NSString stringWithFormat:@"%@Format", propertyName];
-            SEL selector = NSSelectorFromString(selectorName);
+            NSDateFormatter *dateFormatter = [self hoist_dateFormatterForPropertyName:propertyName];
             
-            if (selector == NULL) {
-                NSLog(@"Invalid selector");
+            if (dateFormatter) {
+                NSString *parsedString = [dateFormatter stringFromDate:value];
+                value = parsedString;
             } else {
-                
-                if ([self respondsToSelector:selector]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                    NSString *dateFormat = [self performSelector:selector];
-#pragma clang diagnostic pop
-                    if (dateFormat) {
-                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                        dateFormatter.dateFormat = dateFormat;
-                        NSString *parsedString = [dateFormatter stringFromDate:value];
-                        value = parsedString;
-                    }
-                    
-                } else {
-                    NSLog(@"Failed to convert Date for %@ - implement - (NSString)%@ to fix", propertyName, selectorName);
-                    value = @"";
-                }
-                
+                value = @"";
             }
         }
         
