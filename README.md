@@ -122,6 +122,8 @@ These two classes make it really easy to do something like this
 }];
 ```
 
+Be sure to check out the [BlogPost.m](Project/HoistExample/BlogPost.m) and [BlogPost.h](Project/HoistExample/BlogPost.h) HoistObject too.
+
 ## Requirements
 
 Project is built for iOS7+
