@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, HoistResponseStatusCode) {
     /** Email address or password missing */
     HoistResponseStatusCodeError = 500,
     /** Unknown error occurred */
-    HoistResponseStatusCodeUnknown = -1,
+    HoistResponseStatusCodeUnknown = -1
 };
 
 /**
@@ -80,6 +80,14 @@ typedef NS_ENUM(NSInteger, HoistResponseStatusCode) {
  @param completion The completion block to be executed when the task finishes. This block has no return value and takes three arguments: the returned data, the response and the error.
  */
 - (void)deleteAllForType:(NSString *)type completion:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completion;
+
+/**
+ Get a human readable description of a HoistResponseStatusCode
+ 
+ @param code The HoistResponseStatusCode
+ @return The human readable NSString description of the status code.
+ */
+extern NSString *NSStringFromHoistResponseStatusCode(HoistResponseStatusCode code);
 
 /**
  Set the Hoist application key

@@ -10,4 +10,14 @@
 
 @implementation BlogPost
 
+- (NSDictionary *)propertyToJSONMappings
+{
+    NSMutableDictionary *mappings = [super propertyToJSONMappings];
+    
+    // Key is our property to map the json[object] to.
+    [mappings setObject:@"jsonAuthor" forKey:@"author"];
+    
+    return mappings;
+}
+
 @end

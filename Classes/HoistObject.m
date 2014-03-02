@@ -53,11 +53,17 @@
                 return;
             } else {
                 // Unexpected response
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil, [httpResponse statusCode]);
+                    });
+                }
+                return;
             }
         }
         
         // What.
-        NSLog(@"Host Object ERROR: %@", error.localizedDescription);
+        NSLog(@"Host Object ERROR: %@ %@", error.localizedDescription, data);
         if (completion) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completion(nil, HoistResponseStatusCodeUnknown);
@@ -98,6 +104,12 @@
                 return;
             } else {
                 // Unexpected response
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil, [httpResponse statusCode]);
+                    });
+                }
+                return;
             }
         }
         
@@ -142,7 +154,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"[%@] - {%@}", NSStringFromClass([self class]), [self hoist_description]];
+    return [NSString stringWithFormat:@"{%@}", [self hoist_description]];
 }
 
 #pragma mark - Instance
@@ -244,22 +256,21 @@
                     //TODO: add custom date parsing
                 }
             }
-            
-            NSLog(@"%@ - %@", className, class);
-            
-            
         }
     }
 }
 
-- (NSDictionary *)propertyToJSONMappings
+- (NSMutableDictionary *)propertyToJSONMappings
 {
     // Make sure to call super if you override
-    return @{@"createdDate": @"_createdDate",
-             @"updatedDate": @"_updatedDate",
-             @"objectId": @"_id",
-             @"rev": @"_rev",
-             @"type": @"_type"};
+    return [NSMutableDictionary
+            dictionaryWithDictionary:@{
+                            @"createdDate":@"_createdDate",
+                            @"updatedDate": @"_updatedDate",
+                            @"objectId": @"_id",
+                            @"rev": @"_rev",
+                            @"type": @"_type"}
+            ];
 }
 
 #pragma mark - Private Hoist Object Methods

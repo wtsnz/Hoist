@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *body;
+@property (strong, nonatomic) NSString *author;
 @property (strong, nonatomic) NSNumber *views;
 @property (nonatomic) BOOL draft;
 

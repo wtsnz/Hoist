@@ -98,6 +98,6 @@
  
  Subclasses of HoistObject can override this to provide custom mappings. Make sure to add to the [super configureWithDictionary]
 */
-- (NSDictionary *)propertyToJSONMappings;
+- (NSMutableDictionary *)propertyToJSONMappings;
 
 @end

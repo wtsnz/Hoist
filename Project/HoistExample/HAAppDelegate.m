@@ -31,6 +31,7 @@
                 BlogPost *blogPost = [BlogPost new];
                 blogPost.title = @"Blog Post Title!";
                 blogPost.body = @"Body of the blog post.";
+                blogPost.author = @"Will Townsend";
                 blogPost.views = @(0);
                 blogPost.draft = YES;
                 [blogPost save];
@@ -50,7 +51,7 @@
             NSLog(@"%@", objects);
             
         } else {
-            NSLog(@"Error");
+            NSLog(@"%@", NSStringFromHoistResponseStatusCode(responseCode));
         }
         
     }];
