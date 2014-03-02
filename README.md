@@ -69,6 +69,16 @@ If for some reason you want to have different property names than JSON keys you 
 	- (void)delete;
 	- (void)deleteWithCompletion:(void (^)(HoistResponseStatusCode responseCode))completion;
 
+#####Automagical NSDate Parsing
+
+Any HoistObject Dates are automatically parsed/stored with a RFC3339 date format. This is the same date format as what Hoist uses to store the `createdAt` and `updatedAt` dates.
+
+If you would like to parse/store the date in a different format for your custom object properties, you can! All you need to do is create a function in your HoistObject subclass with the same name of your date property with "DateFormat" added to the end.
+
+Say for example we have a `publishedDate` NSDate property on our BlogPost object. We just need to define the `- (NSString *)publishedDateFormat` function and return our custom date format string ("propertyName" + "Format"). Then we get automapping to and from the property/json!
+
+Not sure how well I explained this, but there is an example in the project that maps the blogPost's `publishedDate` to the json key `jsonPubDate` using a custom date format :)
+
 ###Example
 
 These two classes make it really easy to do something like this 
@@ -90,6 +100,7 @@ These two classes make it really easy to do something like this
             blogPost.body = @"Body of the blog post.";
             blogPost.views = @(0);
             blogPost.draft = YES;
+            blogPost.publishedDate = [NSDate dateWithTimeIntervalSinceNow:-10000];
             [blogPost save];
                 
         } else {
@@ -99,12 +110,14 @@ These two classes make it really easy to do something like this
                 
             // We can then change things and call save to update the object
             blogPost.views = @([blogPost.views integerValue] + 1);
-            [blogPost save];
+            [blogPost saveWithCompletion:^(HoistResponseStatusCode responseCode) {
+                    NSLog(@"Saved with: %@", NSStringFromHoistResponseStatusCode(responseCode));
+            }];
                 
         }
         NSLog(@"%@", objects);
     } else {
-        NSLog(@"Error");
+        NSLog(@"%@", NSStringFromHoistResponseStatusCode(responseCode));
     }
 }];
 ```

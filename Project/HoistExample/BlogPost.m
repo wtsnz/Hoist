@@ -18,6 +18,7 @@
     
     // Key is our property to map the json[object] to.
     [mappings setObject:@"jsonAuthor" forKey:@"author"];
+    [mappings setObject:@"jsonPubDate" forKey:@"publishedDate"];
     
     return mappings;
 }

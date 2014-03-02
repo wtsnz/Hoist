@@ -142,25 +142,25 @@ NSString *NSStringFromHoistResponseStatusCode(HoistResponseStatusCode code)
 {
     switch (code) {
         case HoistResponseStatusCodeOk:
-            return @"Hoist Reponse Code: 200 - Everything is all good";
+            return @"Hoist Reponse Code (200) - Everything is okay";
             break;
         case HoistResponseStatusCodeCreated:
-            return @"Hoist Reponse Code: 201 - Created okay";
+            return @"Hoist Reponse Code (201) - Created okay";
             break;
         case HoistResponseStatusCodeUnauthorised:
-            return @"Hoist Reponse Code: 401 - Unauthorised";
+            return @"Hoist Reponse Code (401) - Unauthorised";
             break;
         case HoistResponseStatusCodeNotFound:
-            return @"Hoist Reponse Code: 404 - Not found";
+            return @"Hoist Reponse Code (404) - Not found";
             break;
         case HoistResponseStatusCodeConflict:
-            return @"Hoist Reponse Code: 409 - Conflict";
+            return @"Hoist Reponse Code (409) - Conflict";
             break;
         case HoistResponseStatusCodeError:
-            return @"Hoist Reponse Code: -1 - Unknown error";
+            return @"Hoist Reponse Code (-1) - Unknown error";
             break;
         default:
-            return @"Hoist Reponse Code: ?? - Unknown response code";
+            return @"Hoist Reponse Code (??) - Unknown response code";
             break;
     }
 }

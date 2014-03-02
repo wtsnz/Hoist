@@ -272,12 +272,7 @@
             ];
 }
 
-- (NSString *)createdDateFormat
-{
-    return @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-}
-
-- (NSString *)updatedDateFormat
+- (NSString *)defaultDateFormat
 {
     return @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 }
@@ -357,12 +352,13 @@
                 dateFormatter.dateFormat = dateFormat;
                 return dateFormatter;
             }
-            
-        } else {
-            NSLog(@"Failed to parse Date for %@ - implement - (NSString)%@ to fix", propertyName, selectorName);
         }
     }
-    return nil;
+    
+    // Else not implemented, use the default date formatter from HoistObject (RFC3339)
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = [self defaultDateFormat];
+    return dateFormatter;
 }
 
 - (NSDictionary *)hoist_dictionaryRepresentation
