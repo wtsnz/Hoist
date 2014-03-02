@@ -10,6 +10,8 @@
 
 @implementation BlogPost
 
+#pragma mark - Hoist Object Overrides
+
 - (NSDictionary *)propertyToJSONMappings
 {
     NSMutableDictionary *mappings = [super propertyToJSONMappings];
@@ -18,6 +20,13 @@
     [mappings setObject:@"jsonAuthor" forKey:@"author"];
     
     return mappings;
+}
+
+#pragma mark - Date Formats
+
+- (NSString *)publishedDateFormat
+{
+    return @"yyyy/MM/dd";
 }
 
 @end

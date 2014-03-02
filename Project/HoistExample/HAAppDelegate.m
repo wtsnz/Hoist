@@ -44,7 +44,10 @@
                 // We can then change things and call save to update the object
                 blogPost.views = @([blogPost.views integerValue] + 1);
                 blogPost.draft = YES;
-                [blogPost save];
+                blogPost.publishedDate = [NSDate dateWithTimeIntervalSinceNow:-10000];
+                [blogPost saveWithCompletion:^(HoistResponseStatusCode responseCode) {
+                    NSLog(@"Saved with: %@", NSStringFromHoistResponseStatusCode(responseCode));
+                }];
                 
             }
             

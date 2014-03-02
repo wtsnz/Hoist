@@ -214,6 +214,7 @@
     }];
 }
 
+
 - (void)configureWithDictionary:(NSDictionary *)dictionary
 {
     //TODO: Add automatic type conversion. Strings only for now.
@@ -248,12 +249,30 @@
             // If the property is an NSDate and obj is NSString, we may have some conversion to do.
             else if ([NSDate class] == class && [obj isKindOfClass:[NSString class]]) {
                 
-                // Check we are parsing the standard hoist createdDate or updatedDate
-                if ([propertyName isEqualToString:@"createdDate"] || [propertyName isEqualToString:@"updatedDate"]) {
-                    NSDate *parsedDate = [[self hoist_RFC3339DateFormatter] dateFromString:obj];
-                    [self setValue:parsedDate forKey:propertyName];
+                
+                // Call the function that should return a string for the format.
+                NSString *selectorName = [NSString stringWithFormat:@"%@Format", propertyName];
+                SEL selector = NSSelectorFromString(selectorName);
+                
+                if (selector == NULL) {
+                    NSLog(@"Invalid selector");
                 } else {
-                    //TODO: add custom date parsing
+                    
+                    if ([self respondsToSelector:selector]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                        NSString *dateFormat = [self performSelector:selector];
+#pragma clang diagnostic pop
+                        if (dateFormat) {
+                            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                            dateFormatter.dateFormat = dateFormat;
+                            NSDate *parsedDate = [dateFormatter dateFromString:obj];
+                            [self setValue:parsedDate forKey:propertyName];
+                        }
+                        
+                    } else {
+                        NSLog(@"Failed to parse Date for %@ - implement - (NSString)%@ to fix", propertyName, selectorName);
+                    }
                 }
             }
         }
@@ -271,6 +290,16 @@
                             @"rev": @"_rev",
                             @"type": @"_type"}
             ];
+}
+
+- (NSString *)createdDateFormat
+{
+    return @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+}
+
+- (NSString *)updatedDateFormat
+{
+    return @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 }
 
 #pragma mark - Private Hoist Object Methods
@@ -363,12 +392,32 @@ static NSDateFormatter *hoist_RFC3339DateFormatter = nil;
         Class class = NSClassFromString(className);
         
         if ([NSDate class] == class) {
-            // Check we are parsing the standard hoist createdDate or updatedDate
-            if ([propertyName isEqualToString:@"createdDate"] || [propertyName isEqualToString:@"updatedDate"]) {
-                NSString *parsedString = [[self hoist_RFC3339DateFormatter] stringFromDate:value];
-                value = parsedString;
+            
+            // Call the function that should return a string for the format.
+            NSString *selectorName = [NSString stringWithFormat:@"%@Format", propertyName];
+            SEL selector = NSSelectorFromString(selectorName);
+            
+            if (selector == NULL) {
+                NSLog(@"Invalid selector");
             } else {
-                //TODO: add custom date parsing
+                
+                if ([self respondsToSelector:selector]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                    NSString *dateFormat = [self performSelector:selector];
+#pragma clang diagnostic pop
+                    if (dateFormat) {
+                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                        dateFormatter.dateFormat = dateFormat;
+                        NSString *parsedString = [dateFormatter stringFromDate:value];
+                        value = parsedString;
+                    }
+                    
+                } else {
+                    NSLog(@"Failed to convert Date for %@ - implement - (NSString)%@ to fix", propertyName, selectorName);
+                    value = @"";
+                }
+                
             }
         }
         
